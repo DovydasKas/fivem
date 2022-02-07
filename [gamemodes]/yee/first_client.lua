@@ -68,7 +68,7 @@ RegisterCommand("model", function(source,args)
     SetPlayerModel(pedid, modell)
     SetModelAsNoLongerNeeded(modell)
     TriggerEvent('chat:addMessage', {
-        args = {'Ped model has been changed!'}
+        args = {'Player model has been changed!'}
     })
 end, false)
 
