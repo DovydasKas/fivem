@@ -74,9 +74,9 @@ AddEventHandler('framework:SavePlayerPosition', function(x, y, z)
             break
         end
     end
-    MySQL.Async.execute('UPDATE user_info SET postion = @position WHERE steamid = @steamid', {
+    MySQL.Async.execute('UPDATE user_info SET position = @position WHERE steamid = @steamid', {
         ['@steamid'] = steamid,
         ['@position'] = '{ ' .. x .. ', ' .. y .. ',' .. z .. '}'
     })
-    print('Player position saved')
+    
 end)
