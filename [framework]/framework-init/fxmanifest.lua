@@ -1,8 +1,8 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'bum'
-description 'eat my ass'
+author 'Dovydas'
+description 'Framework for server and DB'
 version '1.0.0'
 
 
