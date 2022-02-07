@@ -38,7 +38,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, defferals)
                 MySQL.Async.execute('INSERT INTO user_info (steamname, steamid) VALUES (@steamname, @steamid)', {['@steamname'] = GetPlayerName(source), ['@steamid'] = steamid})
             print('Identifiers inserted into DB')
             else
-                print('steamid found, connecting player to server')
+                print('Steamid found, connecting player to server')
             end
         end)
     end
@@ -71,7 +71,6 @@ AddEventHandler('framework:SavePlayerPosition', function(x, y, z)
     for k, v in ipairs(identifiers) do
         if string.match(v, 'steam') then
             steamid = v
-            break
         end
     end
     MySQL.Async.execute('UPDATE user_info SET position = @position WHERE steamid = @steamid', {

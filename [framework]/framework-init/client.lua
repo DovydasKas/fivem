@@ -6,7 +6,7 @@ end)
 RegisterNetEvent('framework:LastPosition')
 AddEventHandler('framework:LastPosition', function(x,y,z)
     Citizen.wait(1)
-    local defaultModel = GetHashKey('mp_m_freemode_01')
+    local defaultModel = 'mp_m_freemode_01'
     RequestModel(defaultModel) -- Need to request model before setting it
     while not HasModelLoaded(defaultModel) do -- Wait for model to load, so game does not crash
         Citizen.wait(1)
