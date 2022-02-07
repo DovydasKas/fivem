@@ -1,11 +1,11 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'bum'
-description 'eat my ass'
+author 'Dovydas'
+description 'Learning lua'
 version '1.0.0'
 
-resource_type 'gametype' { name = 'this shit sucks' }
+resource_type 'gametype' { name = 'aaa' }
 
 client_scripts {
     'first_client.lua',
