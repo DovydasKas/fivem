@@ -57,25 +57,29 @@ AddEventHandler('framework:SpawnPlayer', function()
             break
         end
     end
-    MySQL.Async.fetchAll('SELECT * FROM user_info WHERE steamid = @steamid',{['@steamid'] = steamid}, function(result)
+    MySQL.Async.fetchAll('SELECT * FROM user_info WHERE steamid = @steamid',{
+        ['@steamid'] = steamid
+    }, function(result)
     local SpawnPos = json.decode(result[1].position)
     TriggerClientEvent('framework:LastPosition', source, SpawnPos[1], SpawnPos[2], SpawnPos[3])
     print('Player position loaded')
-end)
+
+    end)
 end)
 
 RegisterServerEvent('framework:SavePlayerPosition')
-AddEventHandler('framework:SavePlayerPosition', function(x, y, z)
+AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ)
     local source = source
     local identifiers = GetPlayerIdentifiers(source)
     for k, v in ipairs(identifiers) do
         if string.match(v, 'steam') then
             steamid = v
+            break
         end
     end
     MySQL.Async.execute('UPDATE user_info SET position = @position WHERE steamid = @steamid', {
         ['@steamid'] = steamid,
-        ['@position'] = '{ ' .. x .. ', ' .. y .. ',' .. z .. '}'
+        ['@position'] = '{ ' .. PosX .. ', ' .. PosY .. ',' .. PosZ .. '}'
     })
-    
+    print('Player position saved')
 end)
