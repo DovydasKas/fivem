@@ -1,20 +1,4 @@
----- Spawn position and player model
-local spawnPos = vector3(-1079.974, -500.2022, 36.57581)
 
-AddEventHandler('onClientGameTypeStart', function()
-
-    exports.spawnmanager:spawnPlayer({
-            x = spawnPos.x,
-            y = spawnPos.y,
-            z = spawnPos.z,
-            model = 's_m_y_robber_01'
-        }, function()
-            TriggerEvent('chat:addMessage', {
-                args = {'.' }
-            })
-        end)
-end)
------------------------------------------------------------------
 
 ------------- Car spawner
 RegisterCommand("spawn", function(source, args)

@@ -33,13 +33,53 @@ AddEventHandler('playerConnecting', function(name, setKickReason, defferals)
             if not result then
               print('Steamid not found, inserting identifiers into database')  
             
-              MySQL.Async.execute('INSERT INTO user_identifiers (steamname, steamid, license, discord, fivem, ip) VALUES (@steamname, @steamid, @license, @discord, @fivem, @ip)',
+                MySQL.Async.execute('INSERT INTO user_identifiers (steamname, steamid, license, discord, fivem, ip) VALUES (@steamname, @steamid, @license, @discord, @fivem, @ip)',
             {['@steamname'] = GetPlayerName(source), ['@steamid'] = steamid, ['@license'] = license, ['@discord'] = discord, ['@fivem'] = fivem, ['@ip'] = ip})
-                print('Identifiers inserted into DB')
+                MySQL.Async.execute('INSERT INTO user_info (steamname, steamid) VALUES (@steamname, @steamid)', {['@steamname'] = GetPlayerName(source), ['@steamid'] = steamid})
+            print('Identifiers inserted into DB')
             else
-                print('steamid found, connecting player to server')
+                print('Steamid found, connecting player to server')
             end
         end)
     end
        
+end)
+
+
+
+RegisterServerEvent('framework:SpawnPlayer')
+AddEventHandler('framework:SpawnPlayer', function()
+    local source = source
+    local identifiers = GetPlayerIdentifiers(source)
+    for k, v in ipairs(identifiers) do
+        if string.match(v, 'steam') then
+            steamid = v
+            break
+        end
+    end
+    MySQL.Async.fetchAll('SELECT * FROM user_info WHERE steamid = @steamid',{
+        ['@steamid'] = steamid
+    }, function(result)
+    local SpawnPos = json.decode(result[1].position)
+    TriggerClientEvent('framework:LastPosition', source, SpawnPos[1], SpawnPos[2], SpawnPos[3])
+    print('Player position loaded')
+
+    end)
+end)
+
+RegisterServerEvent('framework:SavePlayerPosition')
+AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ)
+    local source = source
+    local identifiers = GetPlayerIdentifiers(source)
+    for k, v in ipairs(identifiers) do
+        if string.match(v, 'steam') then
+            steamid = v
+            break
+        end
+    end
+    MySQL.Async.execute('UPDATE user_info SET position = @position, model = @model WHERE steamid = @steamid', {
+        ['@steamid'] = steamid,
+        ['@position'] = '{ ' .. PosX .. ', ' .. PosY .. ',' .. PosZ .. '}',
+        ['@model'] = GetEntityModel(PlayerId()) -- needs fixing
+    })
 end)
