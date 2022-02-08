@@ -77,9 +77,9 @@ AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ)
             break
         end
     end
-    MySQL.Async.execute('UPDATE user_info SET position = @position WHERE steamid = @steamid', {
+    MySQL.Async.execute('UPDATE user_info SET position = @position, model = @model WHERE steamid = @steamid', {
         ['@steamid'] = steamid,
-        ['@position'] = '{ ' .. PosX .. ', ' .. PosY .. ',' .. PosZ .. '}'
+        ['@position'] = '{ ' .. PosX .. ', ' .. PosY .. ',' .. PosZ .. '}',
+        ['@model'] = GetEntityModel(PlayerId())
     })
-    print('Player position saved')
 end)
