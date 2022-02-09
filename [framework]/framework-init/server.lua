@@ -28,18 +28,20 @@ AddEventHandler('playerConnecting', function(name, setKickReason, defferals)
     else
         defferals.done()
         print('Steamid is being fetched')
+        -- Checking if player data is already in DB
         MySQL.Async.fetchScalar('SELECT 1 FROM user_identifiers WHERE steamid = @steamid',{
             ['@steamid'] = steamid
         }, function(result)
             if not result then
-              print('Steamid not found, inserting identifiers into database')  
+              print('Steamid not found, inserting identifiers into database')  -- Player not registered in DB
             
                 MySQL.Async.execute('INSERT INTO user_identifiers (steamname, steamid, license, discord, fivem, ip) VALUES (@steamname, @steamid, @license, @discord, @fivem, @ip)',
             {['@steamname'] = GetPlayerName(source), ['@steamid'] = steamid, ['@license'] = license, ['@discord'] = discord, ['@fivem'] = fivem, ['@ip'] = ip})
                 MySQL.Async.execute('INSERT INTO user_info (steamname, steamid) VALUES (@steamname, @steamid)', {['@steamname'] = GetPlayerName(source), ['@steamid'] = steamid})
-            print('Identifiers inserted into DB')
+               -- MySQL.Async.execute('INSERT INTO user_weapons (steamname, steamid) VALUES (@steamname, @steamid)', {['@steamname'] = GetPlayerName(source), ['@steamid'] = steamid})
+                print('Identifiers inserted into DB')
             else
-                print('Steamid found, connecting player to server')
+                print('Steamid found, connecting player to server') -- Player data already in DB
             end
         end)
     end
@@ -84,6 +86,6 @@ AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ, model
     MySQL.Async.execute('UPDATE user_info SET position = @position, model = @model WHERE steamid = @steamid', {
         ['@steamid'] = steamid,
         ['@position'] = '{ ' .. PosX .. ', ' .. PosY .. ',' .. PosZ .. '}',
-        ['@model'] = model -- needs fixing\
+        ['@model'] = model
     })
 end)
