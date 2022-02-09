@@ -6,6 +6,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, defferals)
     local discord
     local fivem
     local ip
+    
 
     for k, v in ipairs(identifiers) do
         if string.match(v, 'steam') then
@@ -61,14 +62,17 @@ AddEventHandler('framework:SpawnPlayer', function()
         ['@steamid'] = steamid
     }, function(result)
     local SpawnPos = json.decode(result[1].position)
-    TriggerClientEvent('framework:LastPosition', source, SpawnPos[1], SpawnPos[2], SpawnPos[3])
+    local model = json.decode(result[1].model)
+
+    TriggerClientEvent('framework:LastPosition', source, SpawnPos[1], SpawnPos[2], SpawnPos[3], model)
+    SetPlayerModel(source, model)
     print('Player position loaded')
 
     end)
 end)
 
 RegisterServerEvent('framework:SavePlayerPosition')
-AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ)
+AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ, model)
     local source = source
     local identifiers = GetPlayerIdentifiers(source)
     for k, v in ipairs(identifiers) do
@@ -80,6 +84,6 @@ AddEventHandler('framework:SavePlayerPosition', function(PosX, PosY, PosZ)
     MySQL.Async.execute('UPDATE user_info SET position = @position, model = @model WHERE steamid = @steamid', {
         ['@steamid'] = steamid,
         ['@position'] = '{ ' .. PosX .. ', ' .. PosY .. ',' .. PosZ .. '}',
-        ['@model'] = GetEntityModel(PlayerId()) -- needs fixing
+        ['@model'] = model -- needs fixing\
     })
 end)
