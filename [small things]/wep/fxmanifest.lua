@@ -6,4 +6,5 @@ description 'cmd to get weapons'
 version '1.0.0'
 
 
-server_script 'server.lua'
+server_scripts {'server.lua',
+'@mysql-async/lib/MySQL.lua'}
