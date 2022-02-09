@@ -6,9 +6,6 @@ RegisterCommand("weapon", function(source, args)
     ['@label'] = label
 }, function(result) 
         local wep = result[1].name
-        local labl = result[1].label
-        local weight = result[1].weight
-        print(wep, labl, weight)
         GiveWeaponToPed(ped, wep, ammo, false, true) -- Gives weapon
     end)
 
