@@ -1,6 +1,4 @@
 
-SetRiotModeEnabled(true)
-
 RegisterCommand("riot", function(source, args)
     local var = args[1]
     if var == 'enable' then
