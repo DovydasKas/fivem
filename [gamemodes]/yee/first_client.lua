@@ -33,35 +33,6 @@ RegisterCommand("spawn", function(source, args)
 end, false)
 -----------------------------------------------------------------
 
----- Change player model
-RegisterCommand("model", function(source,args)
-    local modell = args[1]
-    if not IsModelValid(modell) then
-        TriggerEvent('chat:addMessage', {
-            args = {'Model is invalid!'}
-        })
-    return
-    end
-    
-    RequestModel(modell)
-    while not HasModelLoaded(modell) do
-    wait(500)
-    end
-
-    local pedid = PlayerId()
-    SetPlayerModel(pedid, modell)
-    SetModelAsNoLongerNeeded(modell)
-    TriggerEvent('chat:addMessage', {
-        args = {'Player model has been changed!'}
-    })
-end, false)
-
-
-
------------------------------------------------------------------
-
-
-
 
 ---- Death message
 Citizen.CreateThread(function()
@@ -93,22 +64,5 @@ Citizen.CreateThread(function()
             end
     end)
 end)
------------------------------------------------------------------
-
-
----- OOC
-RegisterCommand("ooc", function(source,args)
-
-    
-    local name = GetPlayerName(PlayerId())
-    local id = PlayerId()
-    TriggerEvent('chat:addMessage',{
-        multiline = true,
-        args = {'OOC '..name..' ['..id..']', args[1]}
-    })
- 
- 
- end,false)
-
 -----------------------------------------------------------------
  
